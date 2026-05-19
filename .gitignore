@@ -1,0 +1,9 @@
+node_modules/
+dist/
+logs/
+temp/
+downloads/
+courses.json
+courses copy.json
+.env
+*.log

@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "FrontendMasters Downloader",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--"],
+      "args": [
+        "--input",
+        "./courses.json",
+        "--output",
+        "./downloads",
+        "--profile-dir",
+        "/home/adhamali/.config/google-chrome/Default",
+        "--chrome-path",
+        "/opt/google/chrome/google-chrome",
+        // "--headless",
+        "--resolution",
+        "720",
+        "--run-duration-ms",
+        "3600000",
+        "--pause-duration-ms",
+        "3600000",
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}
