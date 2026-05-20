@@ -9,6 +9,7 @@ import { SegmentPayloadNormalizer } from "./modules/segment/SegmentPayloadNormal
 import { SegmentDownloader } from "./modules/segment/SegmentDownloader.js";
 import { SegmentStitcher } from "./modules/segment/SegmentStitcher.js";
 import { DownloadCourses } from "./application/DownloadCourses.js";
+import { CertifyCourses } from "./application/CertifyCourses.js";
 import { logger } from "./utils/logger.js";
 import { formatDuration } from "./utils/index.js";
 import { runWithRateLimitSchedule } from "./utils/RunWindow.js";
@@ -34,6 +35,12 @@ const downloader = new DownloadCourses({
   playlistTimeoutMs: args.playlistTimeoutMs,
 });
 
+const certifier = new CertifyCourses({
+  browser,
+  scraper: new CourseScraper(),
+  lessonTimeoutMs: args.lessonTimeoutMs,
+});
+
 const runDownloadCycle = async (shouldContinue: () => boolean) => {
   await browser.start();
   try {
@@ -44,7 +51,14 @@ const runDownloadCycle = async (shouldContinue: () => boolean) => {
 };
 
 try {
-  if (args.continuous) {
+  if (args.certify) {
+    await browser.start();
+    try {
+      await certifier.run(inputs);
+    } finally {
+      await browser.close();
+    }
+  } else if (args.continuous) {
     await runDownloadCycle(() => true);
   } else {
     logger.info(

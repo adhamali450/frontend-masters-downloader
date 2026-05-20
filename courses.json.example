@@ -1,5 +1,33 @@
 [
     {
+        "title": "Complete Intro to Containers, v2",
+        "url": "https://frontendmasters.com/courses/complete-intro-containers-v2/"
+    },
+    {
+        "title": "Introduction to Backend Architectures",
+        "url": "https://frontendmasters.com/courses/backend-architectures/"
+    },
+    {
+        "title": "Intermediate Next.js: Server Actions, Route Slots, & State Management",
+        "url": "https://frontendmasters.com/courses/intermediate-next-js/"
+    },
+    {
+        "title": "Senior Level Frontend Interview Prep",
+        "url": "https://frontendmasters.com/courses/interviewing-frontend-v2/"
+    },
+    {
+        "title": "State Management at Scale in React & Next.js",
+        "url": "https://frontendmasters.com/courses/react-nextjs-state/"
+    },
+    {
+        "title": "JavaScript: The Hard Parts, v3",
+        "url": "https://frontendmasters.com/courses/javascript-hard-parts-v3/"
+    },
+    {
+        "title": "React Performance, v2",
+        "url": "https://frontendmasters.com/courses/react-performance-v2/"
+    },
+    {
         "title": "Front-End System Design",
         "url": "https://frontendmasters.com/courses/frontend-system-design/"
     },
@@ -10,5 +38,37 @@
     {
         "title": "Backend System Design",
         "url": "https://frontendmasters.com/courses/backend-system-design/"
+    },
+    {
+        "title": "Fullstack TypeScript, v2 (feat. Zod)",
+        "url": "https://frontendmasters.com/courses/fullstack-typescript-v2/"
+    },
+    {
+        "title": "AI Engineering Fundamentals",
+        "url": "https://frontendmasters.com/courses/ai-engineering/"
+    },
+    {
+        "title": "Enterprise UI Development: Microfrontends, Testing, & Code Quality",
+        "url": "https://frontendmasters.com/courses/enterprise-ui-dev-v2/"
+    },
+    {
+        "title": "AWS For Front-End Engineers, v2",
+        "url": "https://frontendmasters.com/courses/aws-v2/"
+    },
+    {
+        "title": "The Hard Parts of UI Development",
+        "url": "https://frontendmasters.com/courses/hard-parts-ui-dev/"
+    },
+    {
+        "title": "Rx.js Fundamentals",
+        "url": "https://frontendmasters.com/courses/rx-js/"
+    },
+    {
+        "title": "Bare Metal JavaScript: The JavaScript Virtual Machine",
+        "url": "https://frontendmasters.com/courses/javascript-cpu-vm/"
+    },
+    {
+        "title": "Blazingly Fast JavaScript",
+        "url": "https://frontendmasters.com/courses/blazingly-fast-js/"
     }
 ]

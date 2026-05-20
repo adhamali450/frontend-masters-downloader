@@ -89,7 +89,14 @@ npm start -- --input ./courses.json --output ./downloads
 --continuous                Disable run/pause schedule
 --run-duration-ms <ms>      Run window duration (default: 3600000)
 --pause-duration-ms <ms>    Pause window duration (default: 3600000)
+--certify                   Mark lessons as completed (separate flow)
 ```
+
+## Certify flow (complete after learning)
+
+Use this flow to obtain a course completion certificate ONLY after you have watched and completed the course offline. Running the certify flow before actually completing the course is cheating.
+
+After the certify flow finishes, the course should appear on https://frontendmasters.com/my-account/library/completed/ where you can download or share the certificate.
 
 ## Examples
 
@@ -103,6 +110,12 @@ Run continuously (no rate-limit schedule):
 
 ```bash
 npm run dev -- --continuous
+```
+
+Certify completed lessons (after finishing the course offline):
+
+```bash
+npm run dev -- --input ./courses.json --certify
 ```
 
 ## Docker

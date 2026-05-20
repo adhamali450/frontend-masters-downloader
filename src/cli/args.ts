@@ -19,6 +19,7 @@ export interface CliArgs {
   continuous: boolean;
   runDurationMs: number;
   pauseDurationMs: number;
+  certify: boolean;
 }
 
 const parseResolution = (value: unknown): VideoResolution | undefined => {
@@ -77,5 +78,6 @@ export function parseArgs(argv: string[]): CliArgs {
     continuous: args.continuous === true,
     runDurationMs,
     pauseDurationMs,
+    certify: args.certify === true,
   };
 }

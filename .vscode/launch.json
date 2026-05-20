@@ -12,13 +12,14 @@
         "./courses.json",
         "--output",
         "./downloads",
-        // "--headless",
         "--resolution",
         "720",
         "--run-duration-ms",
         "3600000",
         "--pause-duration-ms",
         "3600000",
+        // "--headless",
+        // "--certify"
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
