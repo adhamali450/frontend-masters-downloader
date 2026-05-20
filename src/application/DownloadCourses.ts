@@ -8,7 +8,10 @@ import {
   RunWindowExpiredError,
   SegmentDownloader,
 } from "../modules/segment/SegmentDownloader.js";
-import { SegmentStitcher, StitchMetadata } from "../modules/segment/SegmentStitcher.js";
+import {
+  SegmentStitcher,
+  StitchMetadata,
+} from "../modules/segment/SegmentStitcher.js";
 import { TempMediaPaths } from "../modules/media/TempMediaPaths.js";
 import { CourseInput, Lesson } from "../domain/entities/Course.js";
 import {
@@ -35,7 +38,6 @@ interface DownloadCoursesConfig {
   segmentStitcher: SegmentStitcher;
   outputDir: string;
   concurrency: number;
-  dryRun: boolean;
   playlistTimeoutMs: number;
   lessonTimeoutMs: number;
 }
@@ -45,7 +47,7 @@ export class DownloadCourses {
 
   async run(
     inputs: CourseInput[],
-    shouldContinue: ShouldContinue = () => true
+    shouldContinue: ShouldContinue = () => true,
   ): Promise<DownloadRunResult> {
     await mkdir(this.config.outputDir, { recursive: true });
 
@@ -64,7 +66,7 @@ export class DownloadCourses {
         }
 
         logger.error(
-          `Error processing course "${input.title}": ${err instanceof Error ? err.message : String(err)}`
+          `Error processing course "${input.title}": ${err instanceof Error ? err.message : String(err)}`,
         );
       }
     }
@@ -74,19 +76,26 @@ export class DownloadCourses {
 
   private async processCourse(
     courseInput: CourseInput,
-    shouldContinue: ShouldContinue
+    shouldContinue: ShouldContinue,
   ): Promise<boolean> {
     logger.info(`Course start: ${courseInput.title}`);
 
     const page = await this.config.browser.newPage();
-    const course = await this.config.scraper.scrapeCourse(page, courseInput.url);
+    const course = await this.config.scraper.scrapeCourse(
+      page,
+      courseInput.url,
+    );
     await page.close();
 
     const courseSlug = toFileSlug(course.title || courseInput.title);
     const courseDir = path.join(this.config.outputDir, courseSlug);
     await mkdir(courseDir, { recursive: true });
 
-    await writeFile(path.join(courseDir, "course.json"), JSON.stringify(course, null, 2), "utf-8");
+    await writeFile(
+      path.join(courseDir, "course.json"),
+      JSON.stringify(course, null, 2),
+      "utf-8",
+    );
 
     const lessons = course.chapters.flatMap((chapter) => chapter.lessons);
     if (lessons.length === 0) {
@@ -96,13 +105,15 @@ export class DownloadCourses {
 
     const completedLessons = await Promise.all(
       lessons.map((lesson) =>
-        isCompleteLessonFile(lessonOutputPath(courseDir, lesson.index, lesson.title))
-      )
+        isCompleteLessonFile(
+          lessonOutputPath(courseDir, lesson.index, lesson.title),
+        ),
+      ),
     );
     const downloadedCount = completedLessons.filter(Boolean).length;
     if (downloadedCount > 0) {
       logger.info(
-        `Resuming course: ${downloadedCount}/${lessons.length} lessons already downloaded`
+        `Resuming course: ${downloadedCount}/${lessons.length} lessons already downloaded`,
       );
     }
 
@@ -112,7 +123,13 @@ export class DownloadCourses {
         return true;
       }
 
-      await this.processLesson(courseSlug, course.title, lesson, courseDir, shouldContinue);
+      await this.processLesson(
+        courseSlug,
+        course.title,
+        lesson,
+        courseDir,
+        shouldContinue,
+      );
     }
 
     return false;
@@ -123,18 +140,10 @@ export class DownloadCourses {
     courseTitle: string,
     lesson: Lesson,
     courseDir: string,
-    shouldContinue: ShouldContinue
+    shouldContinue: ShouldContinue,
   ): Promise<void> {
     const lessonSlug = toFileSlug(`${lesson.index + 1}-${lesson.title}`);
     const outputPath = lessonOutputPath(courseDir, lesson.index, lesson.title);
-
-    if (this.config.dryRun) {
-      const alreadyDownloaded = await isCompleteLessonFile(outputPath);
-      logger.info(
-        `[dry-run] ${alreadyDownloaded ? "skip" : "download"} ${lesson.title} -> ${outputPath}`
-      );
-      return;
-    }
 
     if (await isCompleteLessonFile(outputPath)) {
       logger.info(`Lesson skipped (already downloaded): ${lesson.title}`);
@@ -151,16 +160,20 @@ export class DownloadCourses {
     const page = await this.config.browser.newPage();
 
     try {
-      const master = await this.config.sniffer.captureMasterPlaylist(page, lesson.url, {
-        navigationTimeoutMs: this.config.lessonTimeoutMs,
-        playlistTimeoutMs: this.config.playlistTimeoutMs,
-        cookiesPath: tempPaths.cookiesPath(),
-      });
+      const master = await this.config.sniffer.captureMasterPlaylist(
+        page,
+        lesson.url,
+        {
+          navigationTimeoutMs: this.config.lessonTimeoutMs,
+          playlistTimeoutMs: this.config.playlistTimeoutMs,
+          cookiesPath: tempPaths.cookiesPath(),
+        },
+      );
 
       const playlist = await this.config.resolver.resolve(
         master.body,
         master.url,
-        master.cookiesPath
+        master.cookiesPath,
       );
 
       const mediaSlug = `${courseSlug}/${lessonSlug}`;
@@ -185,7 +198,7 @@ export class DownloadCourses {
         orderedSegmentPaths,
         outputPath,
         true,
-        metadata
+        metadata,
       );
 
       logger.info(`Lesson complete: ${lesson.title}`);
@@ -196,7 +209,7 @@ export class DownloadCourses {
       }
 
       logger.error(
-        `Error processing lesson "${lesson.title}": ${err instanceof Error ? err.message : String(err)}`
+        `Error processing lesson "${lesson.title}": ${err instanceof Error ? err.message : String(err)}`,
       );
     } finally {
       await page.close().catch(() => undefined);

@@ -8,6 +8,7 @@ RUN apt-get update \
 
 COPY package.json package-lock.json ./
 RUN npm ci
+RUN npx playwright install chromium
 
 COPY tsconfig.json ./
 COPY src ./src

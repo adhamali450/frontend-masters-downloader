@@ -19,7 +19,6 @@ const inputs = await loadCourseInputs(args.inputPath);
 
 const browser = new CourseBrowser({
   headless: args.headless,
-  executablePath: args.chromePath,
 });
 
 const downloader = new DownloadCourses({
@@ -31,7 +30,6 @@ const downloader = new DownloadCourses({
   segmentStitcher: new SegmentStitcher(),
   outputDir: args.outputDir,
   concurrency: args.concurrency,
-  dryRun: args.dryRun,
   lessonTimeoutMs: args.lessonTimeoutMs,
   playlistTimeoutMs: args.playlistTimeoutMs,
 });

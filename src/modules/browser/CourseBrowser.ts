@@ -1,12 +1,10 @@
 import { Browser, BrowserContext, chromium, Page } from "playwright";
-import process from "node:process";
 import { getFrontendMastersCredentials } from "../../config/credentials.js";
 import { delay } from "../../utils/index.js";
 import { logger } from "../../utils/logger.js";
 
 export interface CourseBrowserConfig {
   headless: boolean;
-  executablePath?: string;
 }
 
 const LOGIN_URL = "https://frontendmasters.com/login/";
@@ -26,7 +24,6 @@ export class CourseBrowser {
 
     this.browser = await chromium.launch({
       headless: this.config.headless,
-      executablePath: this.config.executablePath || process.env.CHROME_PATH,
     });
     this.context = await this.browser.newContext();
 

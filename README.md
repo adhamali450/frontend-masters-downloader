@@ -26,14 +26,21 @@ Many open-source attempts to download Frontend Masters content trigger warnings 
 
 ## Requirements
 
-- Node.js >= 20
 - A valid Frontend Masters account
+- Node.js >= 20
+- Playwright 1.46.0
 - FFmpeg installed locally (or use Docker)
 
 ## Install (local)
 
 ```bash
 npm install
+```
+
+If you do not have Chrome or Chromium installed locally, install Playwright's bundled Chromium:
+
+```bash
+npx playwright install chromium
 ```
 
 ## Configure
@@ -74,10 +81,8 @@ npm start -- --input ./courses.json --output ./downloads
 ```
 --input <path>              Input JSON file (default: ./courses.json)
 --output <dir>              Output directory (default: ./downloads)
---chrome-path <path>        Custom Chrome executable path
 --concurrency <number>      Parallel lesson downloads (default: 2)
 --headless                  Run browser headless
---dry-run                   Print what would be downloaded
 --playlist-timeout-ms <ms>  Timeout waiting for HLS playlist (default: 15000)
 --lesson-timeout-ms <ms>    Page navigation timeout (default: 30000)
 --resolution <height>       1080 | 720 | 480 | 360
@@ -101,6 +106,8 @@ npm run dev -- --continuous
 ```
 
 ## Docker
+
+The Docker image installs Playwright's bundled Chromium during build.
 
 Build the image:
 
